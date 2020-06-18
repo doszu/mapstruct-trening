@@ -4,11 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 
 @Getter
 @Setter
 @Builder
+public class Example2Source {
 
-public class Example3_1 {
-    private String example;
+    private List<Integer> myIntegers;
+    private List<String> myStrings;
+
 }

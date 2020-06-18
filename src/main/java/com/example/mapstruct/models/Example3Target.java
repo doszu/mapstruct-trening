@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
-public class Example4Target {
+public class Example3Target {
     private String ip;
     private String server;
 

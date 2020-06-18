@@ -7,9 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class Example5Source {
-
-    private String title;
-    private Example5_1Source props;
-
+public class Example1_1Source {
+    private String prop;
 }

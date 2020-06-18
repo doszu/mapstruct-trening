@@ -4,11 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
+
 @Getter
 @Setter
 @Builder
-public class Example1Dto {
+
+public class Example6 {
     private String title;
-    private long counter;
-    private String type;
+    private Example6_1 example6_1;
+    private List<Example6_2> example6_2List;
 }

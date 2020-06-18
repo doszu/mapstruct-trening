@@ -9,10 +9,6 @@ import lombok.Setter;
 @Setter
 @Builder
 
-public class Example3_2 {
-
-    private Long longer;
-    private Example3_3 example3_3;
-
-
+public class Example6_1 {
+    private String example;
 }

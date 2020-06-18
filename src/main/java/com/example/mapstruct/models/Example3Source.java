@@ -4,11 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Map;
+
 
 @Getter
 @Setter
 @Builder
 
-public class Example3_3 {
-    private String customer;
+public class Example3Source {
+
+    private Map<String, Object> map;
+
 }

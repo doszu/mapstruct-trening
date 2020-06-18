@@ -13,96 +13,71 @@ import static org.junit.Assert.assertNull;
 
 class MapstructApplicationTests {
 
+//EXAMPLE 1
     @Test
     public void example1TestMapping1() {
 
-        Example1 example1 = Example1.builder()
+        Example1Source example1Source = Example1Source.builder()
                 .title("Testing")
                 .count(3)
-                .type(Example1Enum.BLUE).build();
+                .type(Example1Enum.BLUE)
+                .propObj(Example1_1Source.builder().prop("prop testing").build())
+                .build();
 
-        Example1Dto example1Dto = Example1Mapper.INSTANCE.toExampleDto(example1);
+        Example1Target example1Target = Example1Mapper.INSTANCE.toExampleDto(example1Source);
 
-        assertThat(example1Dto).isNotNull();
-        assertThat(example1Dto.getTitle()).isEqualTo("Testing");
-        assertThat(example1Dto.getCounter()).isEqualTo(3);
-        assertThat(example1Dto.getType()).isEqualTo("BLUE");
+        assertThat(example1Target).isNotNull();
+        assertThat(example1Target.getTitle()).isEqualTo("Testing");
+        assertThat(example1Target.getCounter()).isEqualTo(3);
+        assertThat(example1Target.getType()).isEqualTo("BLUE");
+        assertThat(example1Target.getPropField()).isEqualTo("prop testing");
     }
-
 
     @Test
     public void example1TestMapping2() {
 
-        Example1Dto example1Dto = Example1Dto.builder()
+        Example1Target example1Target = Example1Target.builder()
                 .title("Testing")
                 .counter(3)
-                .type("BLUE").build();
+                .type("BLUE")
+                .propField("prop field testing")
+                .build();
 
-        Example1 example1 = Example1Mapper.INSTANCE.toExampleEntity(example1Dto);
+        Example1Source example1Source = Example1Mapper.INSTANCE.toExampleEntity(example1Target);
 
-        assertThat(example1).isNotNull();
-        assertThat(example1.getTitle()).isEqualTo("Testing");
-        assertThat(example1.getCount()).isEqualTo(3);
-        assertThat(example1.getType()).isEqualTo(Example1Enum.BLUE);
+        assertThat(example1Source).isNotNull();
+        assertThat(example1Source.getTitle()).isEqualTo("Testing");
+        assertThat(example1Source.getCount()).isEqualTo(3);
+        assertThat(example1Source.getType()).isEqualTo(Example1Enum.BLUE);
+        assertThat(example1Source.getPropObj().getProp()).isEqualTo("prop field testing");
+
     }
 
-
+//EXAMPLE 2
     @Test
     public void example2TestMapping() {
 
-        Example1 example1 = Example1.builder()
-                .title("Testing")
-                .count(3)
-                .type(Example1Enum.BLUE).build();
+        Example2Source s = Example2Source.builder().build();
+        s.setMyIntegers(Arrays.asList(5, 3, 7));
+        s.setMyStrings(Arrays.asList("five", "three", "seven"));
 
-        Example1Dto example1Dto = Example2Mapper.INSTANCE.toExampleDtoCustom(example1);
-
-        assertThat(example1Dto).isNotNull();
-        assertThat(example1Dto.getTitle()).isEqualTo("Testing");
-        assertThat(example1Dto.getCounter()).isEqualTo(3);
-        assertThat(example1Dto.getType()).isEqualTo("B");
+        Example2Target t = Example2Mapper.MAPPER.toTarget(s);
+        assertEquals(Integer.valueOf(5), t.getMyInteger());
+        assertEquals("seven", t.getMyString());
     }
 
+//EXAMPLE 3
     @Test
-    public void example3TestMapping() {
-        Example3_1 example3_1 = Example3_1.builder()
-                .example("example test")
-                .build();
-        Example3_3 example3_3 = Example3_3.builder()
-                .customer("test customer")
-                .build();
-        Example3_2 example3_2 = Example3_2.builder()
-                .longer((long) 2)
-                .example3_3(example3_3)
-                .build();
-        List<Example3_2> example3_2List = new ArrayList<>();
-        example3_2List.add(example3_2);
-
-        Example3 example = Example3.builder()
-                .title("Test")
-                .example3_1(example3_1)
-                .example3_2List(example3_2List).build();
-
-        Example3 copyExample = Example3Mapper.INSTANCE.copyExample2Dto(example);
-
-        assertThat(copyExample.getTitle()).isEqualTo("Test");
-        assertThat(copyExample.getExample3_1().getExample()).isEqualTo("example test");
-        assertThat(copyExample.getExample3_2List())
-                .extracting("longer", "example2_3.customer")
-                .containsExactly(tuple((long) 2, "test customer"));
-    }
-
-    @Test
-    public void example4TestMappingExisting() {
+    public void example3TestMappingExisting() {
 
         Map<String, Object> map = new HashMap<>();
         map.put("ip", "127.0.0.1");
         map.put("server", "168.192.1.1");
 
-        Example4Source s = Example4Source.builder()
+        Example3Source s = Example3Source.builder()
                 .map(map)
                 .build();
-        Example4Target t = Example4Mapper.MAPPER.toTarget(s);
+        Example3Target t = Example3Mapper.MAPPER.toTarget(s);
 
         assertEquals(t.getIp(), "127.0.0.1");
         assertEquals(t.getServer(), "168.192.1.1");
@@ -110,28 +85,105 @@ class MapstructApplicationTests {
     }
 
     @Test
-    public void example4TestMappingNotExisting() {
+    public void example3TestMappingNotExisting() {
 
         Map<String, Object> map = new HashMap<>();
-        Example4Source s = Example4Source.builder()
+        Example3Source s = Example3Source.builder()
                 .map(map)
                 .build();
-        Example4Target t = Example4Mapper.MAPPER.toTarget(s);
+        Example3Target t = Example3Mapper.MAPPER.toTarget(s);
 
         assertNull(t.getIp());
         assertNull(t.getServer());
 
     }
 
+//EXAMPLE 4
+    @Test
+    public void example4TestMapping() {
+
+        Example1Source example1Source = Example1Source.builder()
+                .title("Testing")
+                .count(3)
+                .type(Example1Enum.BLUE).build();
+
+        Example1Target example1Target = Example4Mapper.INSTANCE.toExampleDtoCustom(example1Source);
+
+        assertThat(example1Target).isNotNull();
+        assertThat(example1Target.getTitle()).isEqualTo("Testing");
+        assertThat(example1Target.getCounter()).isEqualTo(3);
+        assertThat(example1Target.getType()).isEqualTo("B");
+    }
+
+//EXAMPLE 5
     @Test
     public void example5TestMapping() {
 
-        Example5Source s = Example5Source.builder().build();
-        s.setMyIntegers(Arrays.asList(5, 3, 7));
-        s.setMyStrings(Arrays.asList("five", "three", "seven"));
+        Example5_1Source props = Example5_1Source.builder()
+                .prop1("prop1")
+                .prop2("prop2")
+                .prop3("prop3")
+                .build();
+        Example5Source example5 = Example5Source.builder()
+                .title("Testing")
+                .props(props).build();
 
-        Example5Target t = Example5Mapper.MAPPER.toTarget(s);
-        assertEquals(Integer.valueOf(5), t.getMyInteger());
-        assertEquals("seven", t.getMyString());
+        Example5Target example5Target = Example5Mapper.INSTANCE.toTarget(example5);
+
+        assertThat(example5Target).isNotNull();
+        assertThat(example5Target.getProp1()).isEqualTo("prop1");
+        assertThat(example5Target.getProp2()).isEqualTo("prop2");
+        assertThat(example5Target.getProp3()).isEqualTo("prop3");
+
+        System.out.println(example5Target);
+    }
+
+
+    @Test
+    public void example5TestMapping2() {
+        Example5Target example5 = Example5Target.builder()
+                .prop1("prop1")
+                .prop2("prop2")
+                .prop3("prop3")
+                .build();
+
+        Example5Source example5Source = Example5Mapper.INSTANCE.toSource(example5);
+
+        assertThat(example5Source).isNotNull();
+        assertThat(example5Source.getProps().getProp1()).isEqualTo("prop1");
+        assertThat(example5Source.getProps().getProp2()).isEqualTo("prop2");
+        assertThat(example5Source.getProps().getProp3()).isEqualTo("prop3");
+
+        System.out.println(example5Source);
+    }
+
+//EXAMPLE 6
+    @Test
+    public void example6TestMapping() {
+        Example6_1 example6_1 = Example6_1.builder()
+                .example("example test")
+                .build();
+        Example6_3 example6_3 = Example6_3.builder()
+                .customer("test customer")
+                .build();
+        Example6_2 example6_2 = Example6_2.builder()
+                .longer((long) 2)
+                .example6_3(example6_3)
+                .build();
+        List<Example6_2> example6_2List = new ArrayList<>();
+        example6_2List.add(example6_2);
+
+        Example6 example = Example6.builder()
+                .title("Test")
+                .example6_1(example6_1)
+                .example6_2List(example6_2List).build();
+
+        Example6 copyExample = Example6Mapper.INSTANCE.copyExample6Dto(example);
+
+        assertThat(copyExample.getTitle()).isEqualTo("Test");
+        assertThat(copyExample.getExample6_1().getExample()).isEqualTo("example test");
+        assertThat(copyExample.getExample6_2List())
+                .extracting("longer", "example6_3.customer")
+                .containsExactly(tuple((long) 2, "test customer"));
     }
 }

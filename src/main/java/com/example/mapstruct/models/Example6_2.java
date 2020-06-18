@@ -4,12 +4,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @Builder
-public class Example5Source {
 
-    private String title;
-    private Example5_1Source props;
+public class Example6_2 {
+
+    private Long longer;
+    private Example6_3 example6_3;
+
 
 }

@@ -2,19 +2,21 @@ package com.example.mapstruct.mapper;
 
 import com.example.mapstruct.models.Example5Source;
 import com.example.mapstruct.models.Example5Target;
-import com.example.mapstruct.utils.MappingUtilList;
-import com.example.mapstruct.utils.MappingUtilList.FirstElement;
-import com.example.mapstruct.utils.MappingUtilList.LastElement;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper( uses = MappingUtilList.class)
+//from version 1.4.0.Beta1
+@Mapper
 public interface Example5Mapper {
 
-    Example5Mapper MAPPER = Mappers.getMapper( Example5Mapper.class );
+    Example5Mapper INSTANCE = Mappers.getMapper(Example5Mapper.class);
 
-    @Mapping( source = "myIntegers", target = "myInteger", qualifiedBy = FirstElement.class )
-    @Mapping( source = "myStrings", target = "myString", qualifiedBy = LastElement.class )
-    Example5Target toTarget(Example5Source s );
+    @Mapping(source = "props", target = ".")
+    Example5Target toTarget(Example5Source source);
+
+
+    @Mapping(source = ".", target = "props")
+    Example5Source toSource(Example5Target target);
+
 }

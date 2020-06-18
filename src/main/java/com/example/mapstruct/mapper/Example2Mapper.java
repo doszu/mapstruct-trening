@@ -1,23 +1,20 @@
 package com.example.mapstruct.mapper;
 
-import com.example.mapstruct.models.Example1;
-import com.example.mapstruct.models.Example1Dto;
-import com.example.mapstruct.models.Example1Enum;
+import com.example.mapstruct.models.Example2Source;
+import com.example.mapstruct.models.Example2Target;
+import com.example.mapstruct.utils.MappingUtilList;
+import com.example.mapstruct.utils.MappingUtilList.FirstElement;
+import com.example.mapstruct.utils.MappingUtilList.LastElement;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.ValueMapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper( uses = MappingUtilList.class)
 public interface Example2Mapper {
 
-    @ValueMapping(source = "BLUE", target = "B")
-    @ValueMapping(source = "YELLOW", target = "Y")
-    @ValueMapping(source = "RED", target = "R")
-    String example1EnumToString(Example1Enum type);
+    Example2Mapper MAPPER = Mappers.getMapper( Example2Mapper.class );
 
-    Example2Mapper INSTANCE = Mappers.getMapper( Example2Mapper.class);
-
-    @Mapping(source = "count", target = "counter" )
-    Example1Dto toExampleDtoCustom(Example1 example1);
+    @Mapping( source = "myIntegers", target = "myInteger", qualifiedBy = FirstElement.class )
+    @Mapping( source = "myStrings", target = "myString", qualifiedBy = LastElement.class )
+    Example2Target toTarget(Example2Source s );
 }

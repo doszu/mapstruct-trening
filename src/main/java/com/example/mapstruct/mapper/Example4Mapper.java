@@ -1,20 +1,24 @@
 package com.example.mapstruct.mapper;
 
-import com.example.mapstruct.models.Example4Source;
-import com.example.mapstruct.models.Example4Target;
-import com.example.mapstruct.utils.MappingUtilMap;
-import com.example.mapstruct.utils.MappingUtilMap.Ip;
-import com.example.mapstruct.utils.MappingUtilMap.Server;
+import com.example.mapstruct.models.Example1Source;
+import com.example.mapstruct.models.Example1Target;
+import com.example.mapstruct.models.Example1Enum;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ValueMapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper( uses = MappingUtilMap.class)
+//from version 1.4.0.Beta1
+@Mapper
 public interface Example4Mapper {
 
-    Example4Mapper MAPPER = Mappers.getMapper( Example4Mapper.class );
+    @ValueMapping(source = "BLUE", target = "B")
+    @ValueMapping(source = "YELLOW", target = "Y")
+    @ValueMapping(source = "RED", target = "R")
+    String example1EnumToString(Example1Enum type);
 
-    @Mapping(source = "map", target = "ip", qualifiedBy = Ip.class )
-    @Mapping(source = "map", target = "server", qualifiedBy = Server.class )
-    Example4Target toTarget(Example4Source s);
+    Example4Mapper INSTANCE = Mappers.getMapper( Example4Mapper.class);
+
+    @Mapping(source = "count", target = "counter" )
+    Example1Target toExampleDtoCustom(Example1Source example1Source);
 }
