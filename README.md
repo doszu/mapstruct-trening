@@ -15,7 +15,7 @@ Models from *example1*.
 Usage a @ValueMapping on enum type.
 
 #### Example 5
-
+Nested bean property
 
 #### Example 6
 Deep clone model
